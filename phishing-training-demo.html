@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>資安教育教材 - 釣魚郵件示範</title>
+
+  <style>
+    body {
+      font-family: Arial, "Microsoft JhengHei", sans-serif;
+      padding: 40px;
+      line-height: 1.7;
+      color: #222;
+      background: #fff;
+    }
+
+    .page {
+      display: none;
+      max-width: 760px;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    .mail-box {
+      border: 1px solid #ddd;
+      padding: 24px;
+      background: #fff;
+    }
+
+    .logo-row {
+      margin-bottom: 24px;
+    }
+
+    .logo-row img {
+      max-width: 220px;
+      height: auto;
+      display: block;
+    }
+
+    h1 {
+      font-size: 26px;
+      line-height: 1.4;
+      margin-top: 24px;
+    }
+
+    h2 {
+      font-size: 22px;
+    }
+
+    label {
+      display: block;
+      margin-top: 14px;
+      font-weight: bold;
+    }
+
+    input {
+      width: 280px;
+      padding: 10px;
+      font-size: 16px;
+      margin-top: 4px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      margin-top: 18px;
+      padding: 10px 20px;
+      background: #2f9be6;
+      color: white;
+      border: 0;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #1d82c8;
+    }
+
+    a {
+      color: #006699;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+
+    .result-box {
+      margin-top: 24px;
+      padding: 20px;
+      border: 2px solid #333;
+      background: #f2f2f2;
+    }
+
+    .warning {
+      margin-top: 24px;
+      color: red;
+      font-weight: bold;
+    }
+
+    .note {
+      margin-top: 24px;
+      padding: 14px;
+      background: #fff4f4;
+      border-left: 4px solid #d33;
+      color: #800;
+    }
+
+    table {
+      border-collapse: collapse;
+      margin-top: 12px;
+      width: 100%;
+    }
+
+    th,
+    td {
+      border: 1px solid #999;
+      padding: 8px;
+      text-align: left;
+      vertical-align: top;
+      word-break: break-all;
+    }
+
+    th {
+      background: #ddd;
+      width: 140px;
+    }
+
+    .cookie-text {
+      font-family: Consolas, monospace;
+      font-size: 13px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- 第 1 頁：釣魚郵件畫面 -->
+  <section id="page-mail" class="page active">
+    <div class="mail-box">
+      <h2>帳號啟動</h2>
+
+      <p><strong>寄件者：</strong>資訊處社交工程服務 &lt;IT_service@lttc.edu.tw&gt;</p>
+      <p><strong>主旨：</strong>帳號啟動</p>
+
+      <hr>
+
+      <p>您的帳戶狀態在我們的資料入口網站中仍顯示為非活躍狀態。</p>
+
+      <p>
+        如果到今天為止該帳戶仍未被確認為活躍帳戶，
+        則該帳戶將從入口網站中刪除。
+      </p>
+
+      <p>
+        <a onclick="showPage('page-login')">按此立即確認您的帳戶</a>
+      </p>
+
+      <p>請立即確認帳戶狀態，以便其在我們的記錄中保持活躍狀態。</p>
+
+      <p>
+        謝謝你，<br>
+        資訊處社交工程服務
+      </p>
+    </div>
+
+    <p class="warning">
+      ※ 資安教育教材：此頁用於示範釣魚郵件手法，請勿輸入真實帳號密碼。
+    </p>
+  </section>
+
+
+  <!-- 第 2 頁：假登入頁 -->
+  <section id="page-login" class="page">
+    <div class="logo-row">
+      <img
+        src="https://www.caic.ncu.edu.tw/images/%E5%89%B5%E6%96%B0%E8%82%B2%E6%88%90/%E8%82%B2%E6%88%90%E7%9B%B8%E9%97%9C%E8%B3%87%E6%BA%90%E9%80%A3%E7%B5%90/moe-01__1_.png"
+        alt="教育部標誌"
+      >
+    </div>
+
+    <h1>
+      請輸入您的登入電子郵件地址和密碼，以自動增加您的儲存空間，
+      否則您的電子郵件帳戶將被停用。
+    </h1>
+
+    <form onsubmit="saveDemoData(event)">
+      <label for="username">使用者名稱</label>
+      <input type="text" id="username" name="username" autocomplete="off">
+
+      <label for="email">電子郵件</label>
+      <input type="email" id="email" name="email" autocomplete="off">
+
+      <label for="password">密碼</label>
+      <input type="text" id="password" name="password" autocomplete="off">
+
+      <label for="confirmPassword">確認密碼</label>
+      <input type="text" id="confirmPassword" name="confirmPassword" autocomplete="off">
+
+      <br>
+      <button type="submit">Submit</button>
+    </form>
+
+    <p class="warning">
+      ※ 資安教育教材：請勿輸入真實帳號密碼。
+    </p>
+  </section>
+
+
+  <!-- 第 3 頁：顯示輸入資料，模擬帳密外洩 -->
+  <section id="page-result" class="page">
+    <div class="logo-row">
+      <img
+        src="https://www.caic.ncu.edu.tw/images/%E5%89%B5%E6%96%B0%E8%82%B2%E6%88%90/%E8%82%B2%E6%88%90%E7%9B%B8%E9%97%9C%E8%B3%87%E6%BA%90%E9%80%A3%E7%B5%90/moe-01__1_.png"
+        alt="教育部標誌"
+      >
+    </div>
+
+    <h1>Thank you! Your submission has been received!</h1>
+
+    <div class="result-box">
+      <h2>資安教育示範：剛才輸入的資料已被取得</h2>
+
+      <table>
+        <tr>
+          <th>使用者名稱</th>
+          <td id="showUsername"></td>
+        </tr>
+        <tr>
+          <th>電子郵件</th>
+          <td id="showEmail"></td>
+        </tr>
+        <tr>
+          <th>密碼</th>
+          <td id="showPassword"></td>
+        </tr>
+        <tr>
+          <th>確認密碼</th>
+          <td id="showConfirmPassword"></td>
+        </tr>
+        <tr>
+          <th>Cookie 名稱</th>
+          <td>phishing_PHPSESSID</td>
+        </tr>
+        <tr>
+          <th>Cookie 內容</th>
+          <td id="showCookie" class="cookie-text"></td>
+        </tr>
+      </table>
+    </div>
+
+    <p class="note">
+      這就是釣魚網站的風險：使用者以為只是登入或確認帳號，
+      但實際上帳號密碼可能已被對方取得。此教材同時將輸入內容寫入 cookie，
+      可使用 Cookie Editor 檢視 <strong>phishing_PHPSESSID</strong>。
+    </p>
+
+    <button onclick="restartDemo()">重新開始</button>
+  </section>
+
+
+  <script>
+    function showPage(pageId) {
+      const pages = document.querySelectorAll(".page");
+
+      pages.forEach(function(page) {
+        page.classList.remove("active");
+      });
+
+      document.getElementById(pageId).classList.add("active");
+    }
+
+    function saveDemoData(event) {
+      event.preventDefault();
+
+      const username = document.getElementById("username").value;
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      const confirmPassword = document.getElementById("confirmPassword").value;
+
+      const fakeSessionData = {
+        username: username,
+        email: email,
+        password: password,
+        confirmPassword: confirmPassword,
+        capturedAt: new Date().toISOString(),
+        purpose: "security-awareness-training-demo"
+      };
+
+      /*
+        教材示範：
+        模擬釣魚頁把使用者輸入的資料寫入 cookie。
+        正式系統絕對不應將密碼、驗證碼或敏感資料寫入 cookie。
+      */
+      document.cookie =
+        "phishing_PHPSESSID=" +
+        encodeURIComponent(JSON.stringify(fakeSessionData)) +
+        "; path=/; SameSite=Lax";
+
+      document.getElementById("showUsername").textContent = username || "(未輸入)";
+      document.getElementById("showEmail").textContent = email || "(未輸入)";
+      document.getElementById("showPassword").textContent = password || "(未輸入)";
+      document.getElementById("showConfirmPassword").textContent = confirmPassword || "(未輸入)";
+      document.getElementById("showCookie").textContent = document.cookie || "(沒有 cookie)";
+
+      showPage("page-result");
+    }
+
+    function restartDemo() {
+      document.getElementById("username").value = "";
+      document.getElementById("email").value = "";
+      document.getElementById("password").value = "";
+      document.getElementById("confirmPassword").value = "";
+
+      document.cookie = "phishing_PHPSESSID=; path=/; max-age=0; SameSite=Lax";
+
+      showPage("page-mail");
+    }
+  </script>
+
+</body>
+</html>
